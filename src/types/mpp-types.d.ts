@@ -1,3 +1,5 @@
+// Version 1.0.0
+
 type WithId<T> = T & { id: number };
 type WithPassword<T> = T & { password: string };
 
@@ -9,6 +11,7 @@ declare module "mpp-api-types" {
         phone: string | null;
         email: string;
         city: string;
+        admin: boolean;
     }
 
     export enum Quality {
@@ -34,7 +37,7 @@ declare module "mpp-api-types" {
         title: string;
         description: string;
         thumbnail: string | null;
-        images: Image[];
+        images: Image[] | string;
     }
 
     // POST auth/login
