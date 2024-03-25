@@ -15,11 +15,11 @@ CREATE TABLE users (
     username VARCHAR(255) NOT NULL,
     firstName VARCHAR(255) NOT NULL,
     lastName VARCHAR(255) NOT NULL,
-    phone VARCHAR(255) L,
+    phone VARCHAR(255),
     email VARCHAR(255) NOT NULL,
     city VARCHAR(255) NOT NULL,
     admin BOOLEAN NOT NULL,
-    password VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE listings (
