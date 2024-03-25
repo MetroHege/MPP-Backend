@@ -1,0 +1,22 @@
+import { NextFunction, Response } from "express";
+import debux from "debux";
+import { Request } from "../../types/Request";
+import ApiError from "../../core/classes/ApiError";
+
+const notFoundHandler = (req: Request, res: Response, next: NextFunction) => {
+    debux().log("notFoundHandler");
+    const error = new Error(`Not Found - ${req.originalUrl}`);
+    res.status(404);
+    next(error);
+};
+
+const errorHandler = (error: ApiError, req: Request, res: Response, next: NextFunction) => {
+    debux().log("errorHandler");
+    const statusCode = error.status || 500;
+    res.status(statusCode).json({
+        message: error.message,
+        status: statusCode,
+    });
+};
+
+export { notFoundHandler, errorHandler };
