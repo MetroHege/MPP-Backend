@@ -18,7 +18,7 @@ CREATE TABLE users (
     phone VARCHAR(255),
     email VARCHAR(255) NOT NULL,
     city VARCHAR(255) NOT NULL,
-    admin BOOLEAN NOT NULL,
+    admin BOOLEAN NOT NULL DEFAULT FALSE,
     password VARCHAR(255) NOT NULL
 );
 

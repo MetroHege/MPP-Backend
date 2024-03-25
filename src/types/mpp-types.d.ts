@@ -57,7 +57,7 @@ declare module "mpp-api-types" {
     export type GetUsersResponse = UserWithId[];
 
     // POST users
-    export type PostUsersRequest = WithPassword<User>;
+    export type PostUsersRequest = WithPassword<Required<Omit<User, "admin">>>;
     export type PostUsersResponse = UserWithId;
 
     // GET users/me

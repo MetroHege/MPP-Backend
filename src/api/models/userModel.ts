@@ -1,6 +1,7 @@
 import { DeleteUserResponse, PostUsersRequest, UserWithId } from "mpp-api-types";
 import Database from "../../core/database/Database";
 import { DBUser } from "../../types/DBTypes";
+import bcrypt from "bcrypt";
 
 const getAllUsers = async (): Promise<UserWithId[]> => {
     const users = (await Database.get("users")) as DBUser[] | null;
@@ -19,6 +20,9 @@ const getAllUsers = async (): Promise<UserWithId[]> => {
 };
 
 const addUser = async (user: PostUsersRequest): Promise<UserWithId | null> => {
+    const salt = bcrypt.genSaltSync(10);
+    const hashedPassword = bcrypt.hashSync(user.password, salt);
+    user.password = hashedPassword;
     const id = await Database.insert("users", user);
     return id
         ? {
@@ -29,7 +33,6 @@ const addUser = async (user: PostUsersRequest): Promise<UserWithId | null> => {
               phone: user.phone,
               email: user.email,
               city: user.city,
-              admin: user.admin,
           }
         : null;
 };
@@ -69,10 +72,10 @@ const login = async ({
     username?: string;
     email?: string;
 }): Promise<DBUser | null> => {
-    const users = await Database.query("SELECT * FROM users WHERE username = ? OR email = ?", [
-        username,
-        email,
-    ]);
+    const users = await Database.query(
+        `SELECT * FROM users WHERE ${username ? "username" : "email"} = ?`,
+        username ? [username] : [email]
+    );
     return users?.length && (users[0] as DBUser);
 };
 
