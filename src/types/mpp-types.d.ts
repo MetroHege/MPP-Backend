@@ -1,4 +1,4 @@
-// Version 1.0.0
+// Version 1.0.1
 
 type WithId<T> = T & { id: number };
 type WithPassword<T> = T & { password: string };
@@ -41,12 +41,12 @@ declare module "mpp-api-types" {
     }
 
     // POST auth/login
-    export type postLoginRequest = {
+    export type PostLoginRequest = {
         username?: string;
         email?: string;
         password: string;
     };
-    export type postLoginResponse = {
+    export type PostLoginResponse = {
         token: string;
         user: WithId<User>;
     };
@@ -66,7 +66,7 @@ declare module "mpp-api-types" {
     export type PutMeResponse = WithId<User>;
 
     // DELETE users/me
-    export type DeleteMeResponse = WithId<User>;
+    export type DeleteMeResponse = { id: number };
 
     // GET users/:id
     export type GetUserResponse = WithId<User>;
@@ -76,7 +76,7 @@ declare module "mpp-api-types" {
     export type PutUserResponse = WithId<User>;
 
     // DELETE users/:id
-    export type DeleteUserResponse = WithId<User>;
+    export type DeleteUserResponse = { id: number };
 
     // GET listings
     export type GetListingsResponse = WithId<Listing>[];
