@@ -21,10 +21,13 @@ const postUser = async (req: Request, res: Response, next: NextFunction) => {
 };
 
 const getMe = async (req: Request, res: Response, next: NextFunction) => {
-    res.json(req.user);
+    if (!req.user) return next(new ApiError(401, "Unauthorized"));
+    const user = await getUser(req.user.id);
+    res.json(user);
 };
 
 const putMe = async (req: Request, res: Response, next: NextFunction) => {
+    if (!req.user) return next(new ApiError(401, "Unauthorized"));
     const errors = validationResult(req);
     if (!errors.isEmpty()) return next(new ApiError(400, "Invalid input"));
 
@@ -35,6 +38,7 @@ const putMe = async (req: Request, res: Response, next: NextFunction) => {
 };
 
 const deleteMe = async (req: Request, res: Response, next: NextFunction) => {
+    if (!req.user) return next(new ApiError(401, "Unauthorized"));
     const id = await deleteUser(req.user.id);
 
     res.json({ id });
