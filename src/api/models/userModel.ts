@@ -14,7 +14,7 @@ const getAllUsers = async (): Promise<UserWithId[]> => {
               phone: user.phone,
               email: user.email,
               city: user.city,
-              admin: user.admin,
+              admin: user.admin === 1 || user.admin === true,
           }))
         : [];
 };
@@ -33,6 +33,7 @@ const addUser = async (user: PostUsersRequest): Promise<UserWithId | null> => {
               phone: user.phone,
               email: user.email,
               city: user.city,
+              admin: false,
           }
         : null;
 };
@@ -49,7 +50,7 @@ const getUser = async (id: string): Promise<UserWithId | null> => {
               phone: user?.phone,
               email: user?.email,
               city: user?.city,
-              admin: user?.admin,
+              admin: user?.admin === 1,
           }
         : null;
 };
