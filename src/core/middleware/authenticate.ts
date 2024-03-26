@@ -1,5 +1,5 @@
 import { Response, NextFunction } from "express";
-import Request from "../../types/Request";
+import Request, { requestUser } from "../../types/Request";
 import jwt from "jsonwebtoken";
 import config from "../../config";
 
@@ -9,7 +9,7 @@ const authenticate = (req: Request, res: Response, next: NextFunction) => {
 
     if (!token) return res.status(401).json({ error: "Unauthorized" });
     try {
-        req.user = jwt.verify(token, config.jwt_secret);
+        req.user = jwt.verify(token, config.jwt_secret) as requestUser;
         next();
     } catch (error) {
         res.status(403).json({ error: "Invalid token" });
