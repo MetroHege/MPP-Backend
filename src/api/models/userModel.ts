@@ -1,4 +1,4 @@
-import { DeleteUserResponse, PostUsersRequest, UserWithId } from "mpp-api-types";
+import { DeleteUserResponse, PostUsersRequest, PutUserRequest, UserWithId } from "mpp-api-types";
 import Database from "../../core/database/Database";
 import { DBUser } from "../../types/DBTypes";
 import bcrypt from "bcrypt";
@@ -37,7 +37,7 @@ const addUser = async (user: PostUsersRequest): Promise<UserWithId | null> => {
         : null;
 };
 
-const getUserById = async (id: string): Promise<UserWithId | null> => {
+const getUser = async (id: string): Promise<UserWithId | null> => {
     const users = await Database.get("users", id);
     const user = users?.length && (users[0] as DBUser);
     return user
@@ -54,15 +54,16 @@ const getUserById = async (id: string): Promise<UserWithId | null> => {
         : null;
 };
 
-const updateUser = async (id: string, user: PostUsersRequest): Promise<UserWithId | null> => {
+const updateUser = async (id: string, user: PutUserRequest): Promise<UserWithId | null> => {
     const updated = await Database.update("users", id, user);
-    const updatedUser = await getUserById(id);
+    const updatedUser = await getUser(id);
+
     return updated ? updatedUser : null;
 };
 
 const deleteUser = async (id: string): Promise<DeleteUserResponse | null> => {
     const deleted = await Database.delete("users", id);
-    return deleted ? { id: Number(id) } : null;
+    return deleted && deleted > 0 ? { id: Number(id) } : null;
 };
 
 const login = async ({
@@ -79,4 +80,4 @@ const login = async ({
     return users?.length && (users[0] as DBUser);
 };
 
-export { getAllUsers, addUser, getUserById, updateUser, deleteUser, login };
+export { getAllUsers, addUser, getUser, updateUser, deleteUser, login };
