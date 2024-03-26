@@ -27,7 +27,7 @@ GET http://localhost:3000/api/users
 GET http://localhost:3000/api/users/1
 
 ###
-DELETE http://localhost:3000/api/users/3
+DELETE http://localhost:3000/api/users/1
 
 ###
 PUT http://localhost:3000/api/users/1
@@ -37,4 +37,8 @@ Content-Type: application/json
     "phone": "phone",
     "email": "email"
 }
+
+###
+GET http://localhost:3000/api/users/me
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwidXNlcm5hbWUiOiJ0ZXN0IiwiYWRtaW4iOjAsImlhdCI6MTcxMTQ2NjA0NiwiZXhwIjoxNzEyMDcwODQ2fQ.fh58sXe4Z0NNxqv0R2zG0yskGlJN6ZHQ0TtLStpGnXM
 
