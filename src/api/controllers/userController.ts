@@ -12,7 +12,7 @@ const getUsers = async (req: Request, res: Response, next: NextFunction) => {
 
 const postUser = async (req: Request, res: Response, next: NextFunction) => {
     const errors = validationResult(req);
-    if (!errors.isEmpty()) return next(new ApiError(400, "Invalid input"));
+    if (!errors.isEmpty()) return next(new ApiError(400, errors.array()[0].msg));
 
     const body = req.body as PostUsersRequest;
     const user = await addUser(body);
@@ -29,7 +29,7 @@ const getMe = async (req: Request, res: Response, next: NextFunction) => {
 const putMe = async (req: Request, res: Response, next: NextFunction) => {
     if (!req.user) return next(new ApiError(401, "Unauthorized"));
     const errors = validationResult(req);
-    if (!errors.isEmpty()) return next(new ApiError(400, "Invalid input"));
+    if (!errors.isEmpty()) return next(new ApiError(400, errors.array()[0].msg));
 
     const body = req.body as PutMeRequest;
     const user = await updateUser(req.user.id, body);
@@ -45,6 +45,9 @@ const deleteMe = async (req: Request, res: Response, next: NextFunction) => {
 };
 
 const getUserById = async (req: Request, res: Response, next: NextFunction) => {
+    if (!req.user) return next(new ApiError(401, "Unauthorized"));
+    if (!req.user.admin && req.user.id !== req.params.id)
+        return next(new ApiError(403, "Forbidden"));
     const user = await getUser(req.params.id);
     if (!user) return next(new ApiError(404, "User not found"));
 
@@ -53,7 +56,10 @@ const getUserById = async (req: Request, res: Response, next: NextFunction) => {
 
 const putUserById = async (req: Request, res: Response, next: NextFunction) => {
     const errors = validationResult(req);
-    if (!errors.isEmpty()) return next(new ApiError(400, "Invalid input"));
+    if (!errors.isEmpty()) return next(new ApiError(400, errors.array()[0].msg));
+    if (!req.user) return next(new ApiError(401, "Unauthorized"));
+    if (!req.user.admin && req.user.id !== req.params.id)
+        return next(new ApiError(403, "Forbidden"));
 
     const body = req.body as PutMeRequest;
     const user = await updateUser(req.params.id, body);
@@ -62,6 +68,9 @@ const putUserById = async (req: Request, res: Response, next: NextFunction) => {
 };
 
 const deleteUserById = async (req: Request, res: Response, next: NextFunction) => {
+    if (!req.user) return next(new ApiError(401, "Unauthorized"));
+    if (!req.user.admin && req.user.id !== req.params.id)
+        return next(new ApiError(403, "Forbidden"));
     const id = await deleteUser(req.params.id);
     if (!id) return next(new ApiError(404, "User not found"));
 

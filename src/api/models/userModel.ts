@@ -1,18 +1,19 @@
-import { DeleteUserResponse, PostUsersRequest, PutUserRequest, UserWithId } from "mpp-api-types";
+import {
+    DeleteUserResponse,
+    GetUsersResponse,
+    PostUsersRequest,
+    PutUserRequest,
+    UserWithId,
+} from "mpp-api-types";
 import Database from "../../core/database/Database";
 import { DBUser } from "../../types/DBTypes";
 import bcrypt from "bcrypt";
 
-const getAllUsers = async (): Promise<UserWithId[]> => {
+const getAllUsers = async (): Promise<GetUsersResponse> => {
     const users = (await Database.get("users")) as DBUser[] | null;
     return users
         ? users.map(user => ({
               id: user.id,
-              username: user.username,
-              firstName: user.firstName,
-              lastName: user.lastName,
-              phone: user.phone,
-              email: user.email,
               city: user.city,
               admin: user.admin === 1 || user.admin === true,
           }))
@@ -82,4 +83,18 @@ const login = async ({
     return users?.length && (users[0] as DBUser);
 };
 
-export { getAllUsers, addUser, getUser, updateUser, deleteUser, login };
+const findUser = async ({
+    username,
+    email,
+}: {
+    username?: string;
+    email?: string;
+}): Promise<boolean> => {
+    const users = await Database.query(
+        `SELECT * FROM users WHERE ${username ? "username" : "email"} = ?`,
+        username ? [username] : [email]
+    );
+    return users?.length > 0;
+};
+
+export { getAllUsers, addUser, getUser, updateUser, deleteUser, login, findUser };

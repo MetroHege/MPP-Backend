@@ -5,29 +5,45 @@ Content-Type: application/json
   "username": "test",
   "firstName": "test",
     "lastName": "test",
-    "phone": "test",
-    "email": "test",
+    "phone": "0451111111",
+    "email": "test@test.test",
     "city": "test",
     "password": "test"
 }
 
 ###
+GET http://localhost:3000/api/users/me
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwidXNlcm5hbWUiOiJ0ZXN0IiwiYWRtaW4iOjAsImlhdCI6MTcxMTYxMTU5MywiZXhwIjoxNzEyMjE2MzkzfQ.nTKvcnRFVBsHhayQlr2kP73AES3J75MlaxCEnpBkTgU
+
+###
+PUT http://localhost:3000/api/users/me
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwidXNlcm5hbWUiOiJ0ZXN0IiwiYWRtaW4iOjAsImlhdCI6MTcxMTYxMTU5MywiZXhwIjoxNzEyMjE2MzkzfQ.nTKvcnRFVBsHhayQlr2kP73AES3J75MlaxCEnpBkTgU
+
+{
+  "username": "username",
+    "password": "password"
+}
+
+
+###
 POST http://localhost:3000/api/auth/login
 Content-Type: application/json
 
-{
-  "username": "test",
-  "password": "test"
+{   
+  "email": "test",
+  "password": "password"
 }
 
 ###
 GET http://localhost:3000/api/users
 
 ###
-GET http://localhost:3000/api/users/1
-
+GET http://localhost:3000/api/users/2
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwidXNlcm5hbWUiOiJ0ZXN0IiwiYWRtaW4iOjAsImlhdCI6MTcxMTYxMTU5MywiZXhwIjoxNzEyMjE2MzkzfQ.nTKvcnRFVBsHhayQlr2kP73AES3J75MlaxCEnpBkTgU
 ###
-DELETE http://localhost:3000/api/users/1
+DELETE http://localhost:3000/api/users/me
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwidXNlcm5hbWUiOiJ0ZXN0IiwiYWRtaW4iOjAsImlhdCI6MTcxMTYxMTU5MywiZXhwIjoxNzEyMjE2MzkzfQ.nTKvcnRFVBsHhayQlr2kP73AES3J75MlaxCEnpBkTgU
 
 ###
 PUT http://localhost:3000/api/users/1

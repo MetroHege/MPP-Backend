@@ -1,4 +1,4 @@
-// Version 1.0.1
+// Version 1.1.0
 
 type WithId<T> = T & { id: number };
 type WithPassword<T> = T & { password: string };
@@ -14,7 +14,7 @@ declare module "mpp-api-types" {
         admin: boolean;
     }
 
-    export type UserWithId = UserWithId;
+    export type UserWithId = WithId<User>;
 
     export enum Quality {
         New = 5,
@@ -54,7 +54,7 @@ declare module "mpp-api-types" {
     };
 
     // GET users
-    export type GetUsersResponse = UserWithId[];
+    export type GetUsersResponse = Pick<UserWithId, "id" | "city" | "admin">[];
 
     // POST users
     export type PostUsersRequest = WithPassword<Required<Omit<User, "admin">>>;
