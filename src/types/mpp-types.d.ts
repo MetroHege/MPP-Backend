@@ -32,7 +32,7 @@ declare module "mpp-api-types" {
     export interface Listing {
         user: User | number;
         type: "buy" | "sell";
-        category: string;
+        category: string; // TODO
         quality: Quality;
         price: number;
         time: Date;
