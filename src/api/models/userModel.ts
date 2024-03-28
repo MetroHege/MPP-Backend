@@ -56,6 +56,7 @@ const getUser = async (id: string): Promise<UserWithId | null> => {
 };
 
 const updateUser = async (id: string, user: PutUserRequest): Promise<UserWithId | null> => {
+    if (user.password) user.password = bcrypt.hashSync(user.password, bcrypt.genSaltSync(10));
     const updated = await Database.update("users", id, user);
     const updatedUser = await getUser(id);
 
