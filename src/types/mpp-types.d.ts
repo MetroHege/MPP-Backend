@@ -1,4 +1,4 @@
-// Version 1.2.0
+// Version 1.2.1
 
 type WithId<T> = T & { id: number };
 type WithPassword<T> = T & { password: string };
@@ -34,9 +34,9 @@ declare module "mpp-api-types" {
     }
 
     export interface Listing {
-        user: User | number;
+        user: UserWithId | number;
         type: "buy" | "sell";
-        category: Category | number;
+        category: WithId<Category> | number;
         quality: Quality;
         price: number;
         time: Date;
