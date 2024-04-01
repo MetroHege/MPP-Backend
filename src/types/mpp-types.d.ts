@@ -1,4 +1,4 @@
-// Version 1.1.0
+// Version 1.2.0
 
 type WithId<T> = T & { id: number };
 type WithPassword<T> = T & { password: string };
@@ -29,10 +29,14 @@ declare module "mpp-api-types" {
         url: string;
     }
 
+    interface Category {
+        title: string;
+    }
+
     export interface Listing {
         user: User | number;
         type: "buy" | "sell";
-        category: string; // TODO
+        category: Category | number;
         quality: Quality;
         price: number;
         time: Date;
@@ -40,6 +44,11 @@ declare module "mpp-api-types" {
         description: string;
         thumbnail: string | null;
         images: Image[] | string;
+    }
+
+    interface PostableListing extends Listing {
+        user: number;
+        category: number;
     }
 
     // POST auth/login
@@ -84,16 +93,23 @@ declare module "mpp-api-types" {
     export type GetListingsResponse = WithId<Listing>[];
 
     // POST listings
-    export type PostListingsRequest = Listing;
+    export type PostListingsRequest = PostableListing;
     export type PostListingsResponse = WithId<Listing>;
 
     // GET listings/:id
     export type GetListingResponse = WithId<Listing>;
 
     // PUT listings/:id
-    export type PutListingRequest = Partial<Listing>;
+    export type PutListingRequest = Partial<PostableListing>;
     export type PutListingResponse = WithId<Listing>;
 
     // DELETE listings/:id
-    export type DeleteListingResponse = WithId<Listing>;
+    export type DeleteListingResponse = { id: number };
+
+    // POST category
+    export type PostCategoryRequest = Category;
+    export type PostCategoryResponse = WithId<Category>;
+
+    // DELETE category
+    export type DeleteCategoryResponse = { id: number };
 }
