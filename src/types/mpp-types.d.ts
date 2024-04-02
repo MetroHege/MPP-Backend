@@ -48,7 +48,7 @@ declare module "mpp-api-types" {
 
     export type ListingWithId = WithId<Listing>;
 
-    interface PostableListing extends Omit<Listing, "user" | "time"> {
+    interface PostableListing extends Omit<Listing, "user" | "time" | "thumbnail" | "images"> {
         category: number;
     }
 
