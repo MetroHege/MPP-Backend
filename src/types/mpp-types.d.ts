@@ -1,4 +1,4 @@
-// Version 1.2.2
+// Version 1.2.3
 
 type WithId<T> = T & { id: number };
 type WithPassword<T> = T & { password: string };
@@ -48,8 +48,7 @@ declare module "mpp-api-types" {
 
     export type ListingWithId = WithId<Listing>;
 
-    interface PostableListing extends Listing {
-        user: undefined;
+    interface PostableListing extends Omit<Listing, "user" | "time"> {
         category: number;
     }
 
