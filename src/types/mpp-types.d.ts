@@ -49,7 +49,7 @@ declare module "mpp-api-types" {
     export type ListingWithId = WithId<Listing>;
 
     interface PostableListing extends Listing {
-        user: number;
+        user: undefined;
         category: number;
     }
 
