@@ -1,4 +1,4 @@
-// Version 1.2.1
+// Version 1.2.2
 
 type WithId<T> = T & { id: number };
 type WithPassword<T> = T & { password: string };
@@ -45,6 +45,8 @@ declare module "mpp-api-types" {
         thumbnail: string | null;
         images: Image[] | string;
     }
+
+    export type ListingWithID = WithId<Listing>;
 
     interface PostableListing extends Listing {
         user: number;
