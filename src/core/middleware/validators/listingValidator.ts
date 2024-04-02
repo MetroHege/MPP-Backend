@@ -1,5 +1,6 @@
 import { body } from "express-validator";
 import { validateId } from "./universal";
+import { getCategoryById } from "../../../api/models/categoryModel";
 
 const validateType = (optional: boolean) =>
     body("type")
@@ -15,7 +16,11 @@ const validateCategory = (optional: boolean) =>
         .trim()
         .notEmpty()
         .isNumeric()
-        .withMessage("Category must be a number");
+        .withMessage("Category must be a number")
+        .custom(async value => {
+            const category = await getCategoryById(value);
+            if (!category) throw new Error("Category does not exist");
+        });
 
 const validateQuality = (optional: boolean) =>
     body("quality")
@@ -23,6 +28,10 @@ const validateQuality = (optional: boolean) =>
         .trim()
         .notEmpty()
         .isNumeric()
+        .custom(value => {
+            if (value < 1 || value > 5) throw new Error("Quality must be between 1 and 5");
+            return true;
+        })
         .withMessage("Quality must be a number");
 
 const validatePrice = (optional: boolean) =>

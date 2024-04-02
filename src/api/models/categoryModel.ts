@@ -7,6 +7,11 @@ const getAllCategories = async (): Promise<GetCategoriesResponse> => {
     return categories ?? [];
 };
 
+const getCategoryById = async (id: number): Promise<Category | null> => {
+    const categories = await Database.get("categories", id);
+    return categories?.length ? (categories[0] as Category) : null;
+};
+
 const addCategory = async (categoryData: Category): Promise<PostCategoryResponse | null> => {
     const id = await Database.insert("categories", categoryData);
     return id ? { id, title: categoryData.title } : null;
@@ -17,4 +22,4 @@ const deleteCategory = async (id: number): Promise<number | null> => {
     return deleted ? id : null;
 };
 
-export { getAllCategories, addCategory, deleteCategory };
+export { getAllCategories, getCategoryById, addCategory, deleteCategory };
