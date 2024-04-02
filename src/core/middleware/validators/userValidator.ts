@@ -1,55 +1,85 @@
-import { Request, Response, NextFunction } from "express";
-import ApiError from "../../classes/ApiError";
 import { body } from "express-validator";
 import { findUser } from "../../../api/models/userModel";
 import { validateId } from "./universal";
 
-const validateUsername = body("username")
-    .isString()
-    .isLength({ min: 3 })
-    .withMessage("Username must be at least 3 characters long");
+const validateUsername = (optional: boolean) =>
+    body("username")
+        .optional(optional)
+        .trim()
+        .notEmpty()
+        .isString()
+        .isLength({ min: 3 })
+        .withMessage("Username must be at least 3 characters long")
+        .custom(async value => {
+            const user = await findUser({ username: value });
+            if (user) throw new Error("Username already in use");
+        });
 
-const validateFirstName = body("firstName").isString().withMessage("First name must be a string");
+const validateFirstName = (optional: boolean) =>
+    body("firstName")
+        .optional(optional)
+        .trim()
+        .notEmpty()
+        .isString()
+        .withMessage("First name must be a string");
 
-const validateLastName = body("lastName").isString().withMessage("Last name must be a string");
+const validateLastName = (optional: boolean) =>
+    body("lastName")
+        .optional(optional)
+        .trim()
+        .notEmpty()
+        .isString()
+        .withMessage("Last name must be a string");
 
-const validatePhone = body("phone")
-    .isString()
-    .isMobilePhone("any", { strictMode: false })
-    .withMessage("Phone number must be valid")
-    .optional();
+const validatePhone = () =>
+    body("phone")
+        .optional()
+        .trim()
+        .notEmpty()
+        .isString()
+        .isMobilePhone("any", { strictMode: false })
+        .withMessage("Phone number must be valid");
 
-const validateEmail = body("email").isEmail().withMessage("Email must be valid");
+const validateEmail = (optional: boolean) =>
+    body("email")
+        .optional(optional)
+        .trim()
+        .notEmpty()
+        .isEmail()
+        .withMessage("Email must be valid")
+        .custom(async value => {
+            const user = await findUser({ email: value });
+            if (user) throw new Error("Email already in use");
+        });
 
-const validateCity = body("city").isString().withMessage("City must be a string");
+const validateCity = (optional: boolean) =>
+    body("city")
+        .optional(optional)
+        .trim()
+        .notEmpty()
+        .isString()
+        .withMessage("City must be a string");
 
-const validatePassword = body("password").isString().withMessage("Password must be a string");
+const validatePassword = (optional: boolean) =>
+    body("password")
+        .optional(optional)
+        .trim()
+        .notEmpty()
+        .isString()
+        .withMessage("Password must be a string");
 
-const validateUsernameAndEmail = async (req: Request, res: Response, next: NextFunction) => {
-    const user = await findUser(req.body);
-    if (user) return next(new ApiError(400, "Username or email already in use"));
-    next();
-};
-
-const validatePostUser = [
-    validateUsername,
-    validateFirstName,
-    validateLastName,
-    validatePhone,
-    validateEmail,
-    validateCity,
-    validatePassword,
+const createValidationChain = (optional = false) => [
+    validateUsername(optional),
+    validateFirstName(optional),
+    validateLastName(optional),
+    validatePhone(),
+    validateEmail(optional),
+    validateCity(optional),
+    validatePassword(optional),
 ];
 
-const validatePutUser = [
-    validateUsername.optional(),
-    validateFirstName.optional(),
-    validateLastName.optional(),
-    validatePhone.optional(),
-    validateEmail.optional(),
-    validateCity.optional(),
-    validatePassword.optional(),
-];
+const validatePostUser = createValidationChain();
+const validatePutUser = createValidationChain(true);
 
 const validateGetUser = [validateId];
 
@@ -58,7 +88,6 @@ const validatePutUserById = [validateId, ...validatePutUser];
 const validateDeleteUserById = [validateId];
 
 export {
-    validateUsernameAndEmail,
     validatePostUser,
     validatePutUser,
     validateGetUser,

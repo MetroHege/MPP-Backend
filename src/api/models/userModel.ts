@@ -9,6 +9,7 @@ import Database from "../../core/database/Database";
 import { DBUser } from "../../types/DBTypes";
 import bcrypt from "bcrypt";
 import { deleteUserListings } from "./listingModel";
+import { noop } from "../../util/util";
 
 const getAllUsers = async (): Promise<PartialUser[]> => {
     const users = (await Database.get("users")) as DBUser[] | null;
@@ -106,7 +107,7 @@ const findUser = async ({
     const users = await Database.query(
         `SELECT * FROM users WHERE ${username ? "username" : "email"} = ?`,
         username ? [username] : [email]
-    );
+    ).catch(noop);
     return users?.length > 0;
 };
 
