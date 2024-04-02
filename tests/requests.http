@@ -86,3 +86,14 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hb
 
 ###
 GET http://localhost:3000/api/listings
+
+###
+PUT http://localhost:3000/api/listings/1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhZG1pbiIsImFkbWluIjowLCJpYXQiOjE3MTIwNTU2MDYsImV4cCI6MTcxMjY2MDQwNn0.8Ih6VIECSPlhdPyka261bks10x8Jy9KVxhDpeuXe0a0
+
+{
+    "price": 10,
+    "title": "test",
+    "description": "lorem ipsum"
+}
