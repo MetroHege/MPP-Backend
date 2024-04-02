@@ -46,7 +46,7 @@ declare module "mpp-api-types" {
         images: Image[] | string;
     }
 
-    export type ListingWithID = WithId<Listing>;
+    export type ListingWithId = WithId<Listing>;
 
     interface PostableListing extends Listing {
         user: number;
@@ -92,18 +92,18 @@ declare module "mpp-api-types" {
     export type DeleteUserResponse = { id: number };
 
     // GET listings
-    export type GetListingsResponse = WithId<Listing>[];
+    export type GetListingsResponse = ListingWithId[];
 
     // POST listings
     export type PostListingsRequest = PostableListing;
-    export type PostListingsResponse = WithId<Listing>;
+    export type PostListingsResponse = ListingWithId;
 
     // GET listings/:id
-    export type GetListingResponse = WithId<Listing>;
+    export type GetListingResponse = ListingWithId;
 
     // PUT listings/:id
     export type PutListingRequest = Partial<PostableListing>;
-    export type PutListingResponse = WithId<Listing>;
+    export type PutListingResponse = ListingWithId;
 
     // DELETE listings/:id
     export type DeleteListingResponse = { id: number };
