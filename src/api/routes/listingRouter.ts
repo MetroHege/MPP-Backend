@@ -1,5 +1,11 @@
 import { Router } from "express";
-import { deleteListing, getListings, postListing } from "../controllers/listingController";
+import {
+    deleteListing,
+    getListingById,
+    getListings,
+    postListing,
+    putListing,
+} from "../controllers/listingController";
 import authenticate from "../../core/middleware/authenticate";
 import {
     validatePostListing,
@@ -12,8 +18,8 @@ const listingRouter = Router();
 
 listingRouter.get("/", getListings).post("/", authenticate, ...validatePostListing, postListing);
 listingRouter
-    .get("/:id", validateId, getListings)
-    .put("/:id", authenticate, ...validatePutListingById, postListing)
+    .get("/:id", validateId, getListingById)
+    .put("/:id", authenticate, ...validatePutListingById, putListing)
     .delete("/:id", validateId, deleteListing);
 
 export default listingRouter;
