@@ -22,16 +22,22 @@ CREATE TABLE users (
     password VARCHAR(255) NOT NULL
 );
 
+CREATE TABLE categories (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    title VARCHAR(255) NOT NULL
+);
+
 CREATE TABLE listings (
     id INT PRIMARY KEY AUTO_INCREMENT,
     user INT NOT NULL,
     type VARCHAR(255) NOT NULL,
-    category VARCHAR(255) NOT NULL,
+    category INT NOT NULL,
     quality INT NOT NULL,
     price DECIMAL(10, 2) NOT NULL,
     time TIMESTAMP NOT NULL,
     description TEXT NOT NULL,
     thumbnail VARCHAR(255),
     image_ids TEXT,
-    FOREIGN KEY (user) REFERENCES users(id)
+    FOREIGN KEY (user) REFERENCES users(id),
+    FOREIGN KEY (category) REFERENCES categories(id)
 );
