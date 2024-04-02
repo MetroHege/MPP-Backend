@@ -1,11 +1,6 @@
 import { Request as expressRequest } from "express";
-export interface requestUser {
-    id: string;
-    username: string;
-    admin: boolean;
-}
-
+import { PartialUser, UserWithId } from "mpp-api-types";
 export interface Request extends expressRequest {
-    user?: requestUser;
+    user?: PartialUser | UserWithId;
 }
 export default Request;

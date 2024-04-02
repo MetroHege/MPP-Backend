@@ -1,7 +1,8 @@
 import { Request, Response, NextFunction } from "express";
 import ApiError from "../../classes/ApiError";
-import { body, param } from "express-validator";
+import { body } from "express-validator";
 import { findUser } from "../../../api/models/userModel";
+import { validateId } from "./universal";
 
 const validateUsername = body("username")
     .isString()
@@ -23,8 +24,6 @@ const validateEmail = body("email").isEmail().withMessage("Email must be valid")
 const validateCity = body("city").isString().withMessage("City must be a string");
 
 const validatePassword = body("password").isString().withMessage("Password must be a string");
-
-const validateId = param("id").isInt().toInt().withMessage("invalid id");
 
 const validateUsernameAndEmail = async (req: Request, res: Response, next: NextFunction) => {
     const user = await findUser(req.body);
@@ -59,7 +58,6 @@ const validatePutUserById = [validateId, ...validatePutUser];
 const validateDeleteUserById = [validateId];
 
 export {
-    validateId,
     validateUsernameAndEmail,
     validatePostUser,
     validatePutUser,

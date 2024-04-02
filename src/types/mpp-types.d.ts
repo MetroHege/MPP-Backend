@@ -16,6 +16,8 @@ declare module "mpp-api-types" {
 
     export type UserWithId = WithId<User>;
 
+    export type PartialUser = Pick<UserWithId, "id" | "username" | "city" | "admin">;
+
     export enum Quality {
         New = 5,
         LikeNew = 4,
@@ -34,7 +36,7 @@ declare module "mpp-api-types" {
     }
 
     export interface Listing {
-        user: UserWithId | number;
+        user: PartialUser | number;
         type: "buy" | "sell";
         category: WithId<Category> | number;
         quality: Quality;
@@ -64,7 +66,7 @@ declare module "mpp-api-types" {
     };
 
     // GET users
-    export type GetUsersResponse = Pick<UserWithId, "id" | "city" | "admin">[];
+    export type GetUsersResponse = PartialUser[];
 
     // POST users
     export type PostUsersRequest = WithPassword<Required<Omit<User, "admin">>>;
@@ -90,7 +92,7 @@ declare module "mpp-api-types" {
     // DELETE users/:id
     export type DeleteUserResponse = { id: number };
 
-    // GET listings
+    // GET listings & GET users/:id/listings
     export type GetListingsResponse = ListingWithId[];
 
     // POST listings

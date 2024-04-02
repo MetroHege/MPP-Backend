@@ -11,11 +11,12 @@ import {
 } from "../controllers/userController";
 import authenticate from "../../core/middleware/authenticate";
 import {
-    validateId,
     validatePostUser,
     validatePutUser,
     validateUsernameAndEmail,
 } from "../../core/middleware/validators/userValidator";
+import { validateId } from "../../core/middleware/validators/universal";
+import { getUsersListings } from "../controllers/listingController";
 
 // eslint-disable-next-line new-cap
 const userRouter = Router();
@@ -35,6 +36,7 @@ userRouter
         validateUsernameAndEmail,
         putUserById
     )
-    .delete("/:id", authenticate, validateId, deleteUserById);
+    .delete("/:id", authenticate, validateId, deleteUserById)
+    .get("/:id/listings", validateId, getUsersListings);
 
 export default userRouter;

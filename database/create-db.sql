@@ -34,10 +34,11 @@ CREATE TABLE listings (
     category INT NOT NULL,
     quality INT NOT NULL,
     price DECIMAL(10, 2) NOT NULL,
-    time TIMESTAMP NOT NULL,
+    time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    title VARCHAR(255) NOT NULL,
     description TEXT NOT NULL,
     thumbnail VARCHAR(255),
-    image_ids TEXT,
+    images TEXT,
     FOREIGN KEY (user) REFERENCES users(id),
     FOREIGN KEY (category) REFERENCES categories(id)
 );

@@ -2,13 +2,13 @@ POST http://localhost:3000/api/users
 Content-Type: application/json
 
 {
-  "username": "test",
-  "firstName": "test",
-    "lastName": "test",
+  "username": "admin",
+  "firstName": "admin",
+    "lastName": "user",
     "phone": "0451111111",
-    "email": "test@test.test",
+    "email": "admin@mpp.fi",
     "city": "test",
-    "password": "test"
+    "password": "admin"
 }
 
 ###
@@ -18,11 +18,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwidXNlcm5hb
 ###
 PUT http://localhost:3000/api/users/me
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwidXNlcm5hbWUiOiJ0ZXN0IiwiYWRtaW4iOjAsImlhdCI6MTcxMTYxMTU5MywiZXhwIjoxNzEyMjE2MzkzfQ.nTKvcnRFVBsHhayQlr2kP73AES3J75MlaxCEnpBkTgU
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhZG1pbiIsImFkbWluIjowLCJpYXQiOjE3MTIwNTU2MDYsImV4cCI6MTcxMjY2MDQwNn0.8Ih6VIECSPlhdPyka261bks10x8Jy9KVxhDpeuXe0a0
 
 {
-  "username": "username",
-    "password": "password"
+  "username": "admin",
+    "password": "admin"
 }
 
 
@@ -31,8 +31,8 @@ POST http://localhost:3000/api/auth/login
 Content-Type: application/json
 
 {   
-  "email": "test",
-  "password": "password"
+  "username": "admin",
+  "password": "admin"
 }
 
 ###
@@ -58,3 +58,31 @@ Content-Type: application/json
 GET http://localhost:3000/api/users/me
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwidXNlcm5hbWUiOiJ0ZXN0IiwiYWRtaW4iOjAsImlhdCI6MTcxMTQ2NjA0NiwiZXhwIjoxNzEyMDcwODQ2fQ.fh58sXe4Z0NNxqv0R2zG0yskGlJN6ZHQ0TtLStpGnXM
 
+###
+POST http://localhost:3000/api/categories
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhZG1pbiIsImFkbWluIjowLCJpYXQiOjE3MTIwNTU2MDYsImV4cCI6MTcxMjY2MDQwNn0.8Ih6VIECSPlhdPyka261bks10x8Jy9KVxhDpeuXe0a0
+
+{
+    "title": "test"
+}
+
+###
+GET http://localhost:3000/api/categories
+
+###
+POST http://localhost:3000/api/listings
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhZG1pbiIsImFkbWluIjowLCJpYXQiOjE3MTIwNTU2MDYsImV4cCI6MTcxMjY2MDQwNn0.8Ih6VIECSPlhdPyka261bks10x8Jy9KVxhDpeuXe0a0
+
+{
+    "type": "sell",
+    "category": 1,
+    "quality": 1,
+    "price": 1,
+    "title": "test",
+    "description": "test"
+}
+
+###
+GET http://localhost:3000/api/listings

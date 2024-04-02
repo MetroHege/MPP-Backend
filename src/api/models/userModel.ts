@@ -1,6 +1,6 @@
 import {
     DeleteUserResponse,
-    GetUsersResponse,
+    PartialUser,
     PostUsersRequest,
     PutUserRequest,
     UserWithId,
@@ -8,12 +8,14 @@ import {
 import Database from "../../core/database/Database";
 import { DBUser } from "../../types/DBTypes";
 import bcrypt from "bcrypt";
+import { deleteUserListings } from "./listingModel";
 
-const getAllUsers = async (): Promise<GetUsersResponse> => {
+const getAllUsers = async (): Promise<PartialUser[]> => {
     const users = (await Database.get("users")) as DBUser[] | null;
     return users
         ? users.map(user => ({
               id: user.id,
+              username: user.username,
               city: user.city,
               admin: user.admin === 1 || user.admin === true,
           }))
@@ -39,32 +41,43 @@ const addUser = async (user: PostUsersRequest): Promise<UserWithId | null> => {
         : null;
 };
 
-const getUser = async (id: string): Promise<UserWithId | null> => {
+const getUser = async (
+    id: string | number,
+    partial: boolean = true
+): Promise<UserWithId | PartialUser | null> => {
     const users = await Database.get("users", id);
     const user = users?.length && (users[0] as DBUser);
     return user
-        ? {
-              id: user?.id,
-              username: user?.username,
-              firstName: user?.firstName,
-              lastName: user?.lastName,
-              phone: user?.phone,
-              email: user?.email,
-              city: user?.city,
-              admin: user?.admin === 1,
-          }
+        ? partial
+            ? {
+                  id: user?.id,
+                  username: user?.username,
+                  city: user?.city,
+                  admin: user?.admin === 1,
+              }
+            : {
+                  id: user?.id,
+                  username: user?.username,
+                  firstName: user?.firstName,
+                  lastName: user?.lastName,
+                  phone: user?.phone,
+                  email: user?.email,
+                  city: user?.city,
+                  admin: user?.admin === 1,
+              }
         : null;
 };
 
-const updateUser = async (id: string, user: PutUserRequest): Promise<UserWithId | null> => {
+const updateUser = async (id: number, user: PutUserRequest): Promise<UserWithId | null> => {
     if (user.password) user.password = bcrypt.hashSync(user.password, bcrypt.genSaltSync(10));
     const updated = await Database.update("users", id, user);
-    const updatedUser = await getUser(id);
+    const updatedUser = (await getUser(id, false)) as UserWithId | null;
 
     return updated ? updatedUser : null;
 };
 
-const deleteUser = async (id: string): Promise<DeleteUserResponse | null> => {
+const deleteUser = async (id: number): Promise<DeleteUserResponse | null> => {
+    await deleteUserListings(id);
     const deleted = await Database.delete("users", id);
     return deleted && deleted > 0 ? { id: Number(id) } : null;
 };

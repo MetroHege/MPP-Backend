@@ -22,7 +22,7 @@ const postUser = async (req: Request, res: Response, next: NextFunction) => {
 
 const getMe = async (req: Request, res: Response, next: NextFunction) => {
     if (!req.user) return next(new ApiError(401, "Unauthorized"));
-    const user = await getUser(req.user.id);
+    const user = await getUser(req.user.id, false);
     res.json(user);
 };
 
@@ -46,9 +46,9 @@ const deleteMe = async (req: Request, res: Response, next: NextFunction) => {
 
 const getUserById = async (req: Request, res: Response, next: NextFunction) => {
     if (!req.user) return next(new ApiError(401, "Unauthorized"));
-    if (!req.user.admin && req.user.id !== req.params.id)
+    if (!req.user.admin && req.user.id !== +req.params.id)
         return next(new ApiError(403, "Forbidden"));
-    const user = await getUser(req.params.id);
+    const user = await getUser(req.params.id, false);
     if (!user) return next(new ApiError(404, "User not found"));
 
     res.json(user);
@@ -58,20 +58,20 @@ const putUserById = async (req: Request, res: Response, next: NextFunction) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) return next(new ApiError(400, errors.array()[0].msg));
     if (!req.user) return next(new ApiError(401, "Unauthorized"));
-    if (!req.user.admin && req.user.id !== req.params.id)
+    if (!req.user.admin && req.user.id !== +req.params.id)
         return next(new ApiError(403, "Forbidden"));
 
     const body = req.body as PutMeRequest;
-    const user = await updateUser(req.params.id, body);
+    const user = await updateUser(+req.params.id, body);
 
     res.json(user);
 };
 
 const deleteUserById = async (req: Request, res: Response, next: NextFunction) => {
     if (!req.user) return next(new ApiError(401, "Unauthorized"));
-    if (!req.user.admin && req.user.id !== req.params.id)
+    if (!req.user.admin && req.user.id !== +req.params.id)
         return next(new ApiError(403, "Forbidden"));
-    const id = await deleteUser(req.params.id);
+    const id = await deleteUser(+req.params.id);
     if (!id) return next(new ApiError(404, "User not found"));
 
     res.json(id);
