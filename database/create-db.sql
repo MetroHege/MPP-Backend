@@ -42,3 +42,11 @@ CREATE TABLE listings (
     FOREIGN KEY (user) REFERENCES users(id),
     FOREIGN KEY (category) REFERENCES categories(id)
 );
+
+CREATE TABLE images (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    listing INT NOT NULL,
+    url VARCHAR(255) NOT NULL,
+    thumbnail BOOLEAN NOT NULL DEFAULT FALSE,
+    FOREIGN KEY (listing) REFERENCES listings(id)
+)

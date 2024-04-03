@@ -1,4 +1,4 @@
-// Version 1.2.3
+// Version 1.3.0
 
 type WithId<T> = T & { id: number };
 type WithPassword<T> = T & { password: string };
@@ -29,6 +29,7 @@ declare module "mpp-api-types" {
     export interface Image {
         listing: number;
         url: string;
+        thumbnail: boolean;
     }
 
     interface Category {
@@ -44,14 +45,15 @@ declare module "mpp-api-types" {
         time: Date;
         title: string;
         description: string;
-        thumbnail: string | null;
+        thumbnail: Image | null;
         images: Image[] | string;
     }
 
     export type ListingWithId = WithId<Listing>;
 
-    interface PostableListing extends Omit<Listing, "user" | "time" | "thumbnail" | "images"> {
+    interface PostableListing extends Omit<Listing, "user" | "time" | "thumbnail"> {
         category: number;
+        images: string[];
     }
 
     // POST auth/login
