@@ -55,10 +55,9 @@ const putListing = async (req: Request, res: Response, next: NextFunction) => {
     if (!req.user.admin && req.user.id !== +req.params.id)
         return next(new ApiError(403, "Forbidden"));
 
-    const body = req.body as PutListingRequest;
+    const body = req.body as PutListingRequest & { images?: string };
     const listing = await updateListing(+req.params.id, {
         ...body,
-        images: JSON.stringify(body.images),
     });
 
     res.json(listing);
