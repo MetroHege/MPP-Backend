@@ -10,7 +10,7 @@ import {
     deleteListing as deleteListingById,
     updateListing,
 } from "../models/listingModel";
-import { PostListingsRequest } from "mpp-api-types";
+import { PostListingsRequest, PutListingRequest } from "mpp-api-types";
 
 const getListings = async (req: Request, res: Response, next: NextFunction) => {
     const listings = await getAllListings();
@@ -26,9 +26,16 @@ const postListing = async (req: Request, res: Response, next: NextFunction) => {
     if (!req.user) return next(new ApiError(401, "Unauthorized"));
     const errors = validationResult(req);
     if (!errors.isEmpty()) return next(new ApiError(400, errors.array()[0].msg));
+    if (!req.files) return next(new ApiError(400, "No images uploaded"));
 
     const body = req.body as PostListingsRequest;
-    const listing = await addListing(body, +req.user.id);
+    const listing = await addListing(
+        {
+            ...body,
+            images: req.files instanceof Array ? req.files.map(file => file.filename) : [],
+        },
+        +req.user.id
+    );
 
     res.status(201).json(listing);
 };
@@ -48,8 +55,11 @@ const putListing = async (req: Request, res: Response, next: NextFunction) => {
     if (!req.user.admin && req.user.id !== +req.params.id)
         return next(new ApiError(403, "Forbidden"));
 
-    const body = req.body as PostListingsRequest;
-    const listing = await updateListing(+req.params.id, body);
+    const body = req.body as PutListingRequest;
+    const listing = await updateListing(+req.params.id, {
+        ...body,
+        images: JSON.stringify(body.images),
+    });
 
     res.json(listing);
 };

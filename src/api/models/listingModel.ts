@@ -2,6 +2,8 @@ import { DeleteListingResponse, ListingWithId, PostableListing } from "mpp-api-t
 import Database from "../../core/database/Database";
 import { DBListing } from "../../types/DBTypes";
 import { getUser } from "./userModel";
+import config from "../../config";
+import { addImage, getListingImages } from "./imageModel";
 
 const getAllListings = async (): Promise<ListingWithId[]> => {
     const listings = (await Database.get("listings")) as null | DBListing[];
@@ -35,15 +37,29 @@ const getUserListings = async (userId: number): Promise<ListingWithId[]> => {
 };
 
 const addListing = async (
-    listingData: PostableListing,
+    listingData: PostableListing & { images: string[] },
     userId: number
 ): Promise<ListingWithId | null> => {
-    const id = await Database.insert("listings", { ...listingData, user: userId });
+    const id = await Database.insert("listings", {
+        ...listingData,
+        images: "",
+        user: userId,
+    });
     if (!id) return null;
     const listings = (await Database.get("listings", id)) as DBListing[] | null;
     if (!listings) return null;
-    const listing = listings[0];
-    const user = await getUser(listing.user);
+    const images = await Promise.all(
+        listingData.images.map(async (image, index) => {
+            addImage({
+                listing: id,
+                url: `${config.uploadUrl}${image}`,
+                thumbnail: index === 0,
+            });
+        })
+    );
+    const listing = await updateListing(id, { images: JSON.stringify(images) });
+    if (!listing) return null;
+    const user = await getUser(listings[0].user);
     return {
         ...listing,
         user: user ?? listing.user,
@@ -55,15 +71,18 @@ const getListing = async (id: number): Promise<ListingWithId | null> => {
     if (!listings) return null;
     const listing = listings[0];
     const user = await getUser(listing.user);
+    const images = await getListingImages(id);
     return {
         ...listing,
+        images,
+        thumbnail: images.find(image => image.thumbnail) ?? null,
         user: user ?? listing.user,
     };
 };
 
 const updateListing = async (
     id: number,
-    listingData: Partial<PostableListing>
+    listingData: Partial<Omit<PostableListing, "images"> & { images: string }>
 ): Promise<ListingWithId | null> => {
     const success = await Database.update("listings", id, listingData);
     if (!success) return null;

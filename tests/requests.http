@@ -60,7 +60,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwidXNlcm5hb
 ###
 POST http://localhost:3000/api/categories
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhZG1pbiIsImFkbWluIjowLCJpYXQiOjE3MTIwNTU2MDYsImV4cCI6MTcxMjY2MDQwNn0.8Ih6VIECSPlhdPyka261bks10x8Jy9KVxhDpeuXe0a0
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJ1c2VyIiwiYWRtaW4iOjAsImlhdCI6MTcxMjE0MjMyNCwiZXhwIjoxNzEyNzQ3MTI0fQ.CxCvU45TNHE_OpXQh_POxPSl6EADL4mBpni7mlg22sk
 
 {
     "title": "test"
@@ -72,7 +72,7 @@ GET http://localhost:3000/api/categories
 ###
 POST http://localhost:3000/api/listings
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhZG1pbiIsImFkbWluIjowLCJpYXQiOjE3MTIwNTU2MDYsImV4cCI6MTcxMjY2MDQwNn0.8Ih6VIECSPlhdPyka261bks10x8Jy9KVxhDpeuXe0a0
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJ1c2VyIiwiYWRtaW4iOjAsImlhdCI6MTcxMjE0MjMyNCwiZXhwIjoxNzEyNzQ3MTI0fQ.CxCvU45TNHE_OpXQh_POxPSl6EADL4mBpni7mlg22sk
 
 {
     "type": "sell",
@@ -80,7 +80,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hb
     "quality": 1,
     "price": 1,
     "title": "test",
-    "description": "test"
+    "description": "test",
 }
 
 ###
@@ -89,10 +89,52 @@ GET http://localhost:3000/api/listings
 ###
 PUT http://localhost:3000/api/listings/1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhZG1pbiIsImFkbWluIjowLCJpYXQiOjE3MTIwNTU2MDYsImV4cCI6MTcxMjY2MDQwNn0.8Ih6VIECSPlhdPyka261bks10x8Jy9KVxhDpeuXe0a0
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJ1c2VyIiwiYWRtaW4iOjAsImlhdCI6MTcxMjE0MjMyNCwiZXhwIjoxNzEyNzQ3MTI0fQ.CxCvU45TNHE_OpXQh_POxPSl6EADL4mBpni7mlg22sk
 
 {
     "price": 10,
     "title": "test",
     "description": "lorem ipsum"
 }
+
+###
+POST http://localhost:3000/api/listings
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJ1c2VyIiwiYWRtaW4iOjAsImlhdCI6MTcxMjE0MjMyNCwiZXhwIjoxNzEyNzQ3MTI0fQ.CxCvU45TNHE_OpXQh_POxPSl6EADL4mBpni7mlg22sk
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="type"
+
+sell
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="category"
+
+1
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="quality"
+
+1
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="price"
+
+1
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="title"
+
+test
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="description"
+
+test
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="file"; filename="IMG_8486.JPG"
+Content-Type: image/jpg
+
+< ./IMG_8486.JPG
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="file"; filename="IMG_8486.JPG"
+Content-Type: image/jpg
+
+< ./IMG_8486.JPG
+------WebKitFormBoundary7MA4YWxkTrZu0gW--

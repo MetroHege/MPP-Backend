@@ -2,7 +2,7 @@ import mysql from "mysql2/promise";
 import config from "../../config";
 import { DBListing, DBUser } from "../../types/DBTypes";
 
-type table = "users" | "listings" | "categories";
+type table = "users" | "listings" | "categories" | "images";
 
 const pool = mysql.createPool({
     host: config.db_host,

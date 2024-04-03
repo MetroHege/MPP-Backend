@@ -32,7 +32,7 @@ const validateQuality = (optional: boolean) =>
             if (value < 1 || value > 5) throw new Error("Quality must be between 1 and 5");
             return true;
         })
-        .withMessage("Quality must be a number");
+        .withMessage("Quality must be a valid number between 1 and 5");
 
 const validatePrice = (optional: boolean) =>
     body("price")

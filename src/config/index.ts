@@ -10,4 +10,5 @@ export default {
     db_password: process.env.DB_PASSWORD,
     db_database: process.env.DB_DATABASE,
     jwt_secret: process.env.JWT_SECRET || "secret",
+    uploadUrl: process.env.UPLOAD_URL || "http://localhost:3000/uploads/",
 };

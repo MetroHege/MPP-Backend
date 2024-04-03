@@ -1,4 +1,4 @@
-import { Category, Listing, User } from "mpp-api-types";
+import { Category, Image, Listing, User } from "mpp-api-types";
 
 export interface DBUser extends Required<Omit<User, "admin">> {
     id: number;
@@ -15,5 +15,9 @@ export interface DBListing extends Listing {
 }
 
 export interface DBCategory extends Category {
+    id: number;
+}
+
+export interface DBImage extends Image {
     id: number;
 }

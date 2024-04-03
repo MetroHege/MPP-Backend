@@ -5,8 +5,7 @@ import ApiError from "../../core/classes/ApiError";
 
 const notFoundHandler = (req: Request, res: Response, next: NextFunction) => {
     debux().log("notFoundHandler");
-    const error = new Error(`Not Found - ${req.originalUrl}`);
-    res.status(404);
+    const error = new ApiError(404, `Not Found - ${req.originalUrl}`);
     next(error);
 };
 

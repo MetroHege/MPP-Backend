@@ -49,4 +49,4 @@ CREATE TABLE images (
     url VARCHAR(255) NOT NULL,
     thumbnail BOOLEAN NOT NULL DEFAULT FALSE,
     FOREIGN KEY (listing) REFERENCES listings(id)
-)
+);

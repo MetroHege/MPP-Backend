@@ -122,9 +122,7 @@ dist
 .yarn/build-state.yml
 .pnp.*
 
-# misc
-
-start.bat
-private
-debug.json
-/lavalink/logs
+# ignore content of uploads folder
+uploads/*
+# except one (empty) file to have the folder in version control
+!uploads/.gitkeep
