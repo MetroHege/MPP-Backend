@@ -8,16 +8,19 @@ import { addImage, getListingImages } from "./imageModel";
 const getAllListings = async (): Promise<ListingWithId[]> => {
     const listings = (await Database.get("listings")) as null | DBListing[];
     if (!listings) return [];
-    const listingsWithUser = Promise.all(
+    const fullListings = Promise.all(
         listings.map(async listing => {
             const user = await getUser(listing.user);
+            const images = await getListingImages(listing.id);
             return {
                 ...listing,
+                images,
+                thumbnail: images.find(image => image.thumbnail) ?? null,
                 user: user ?? listing.user,
             };
         })
     );
-    return listingsWithUser;
+    return fullListings;
 };
 
 const getUserListings = async (userId: number): Promise<ListingWithId[]> => {
