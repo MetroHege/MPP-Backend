@@ -1,4 +1,9 @@
-import { Category, GetCategoriesResponse, PostCategoryResponse } from "mpp-api-types";
+import {
+    Category,
+    CategoryWithId,
+    GetCategoriesResponse,
+    PostCategoryResponse,
+} from "mpp-api-types";
 import Database from "../../core/database/Database";
 import { DBCategory } from "../../types/DBTypes";
 
@@ -7,9 +12,9 @@ const getAllCategories = async (): Promise<GetCategoriesResponse> => {
     return categories ?? [];
 };
 
-const getCategoryById = async (id: number): Promise<Category | null> => {
+const getCategoryById = async (id: number): Promise<CategoryWithId | null> => {
     const categories = await Database.get("categories", id);
-    return categories?.length ? (categories[0] as Category) : null;
+    return categories?.length ? (categories[0] as CategoryWithId) : null;
 };
 
 const addCategory = async (categoryData: Category): Promise<PostCategoryResponse | null> => {

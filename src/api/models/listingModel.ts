@@ -4,6 +4,7 @@ import { DBListing } from "../../types/DBTypes";
 import { getUser } from "./userModel";
 import config from "../../config";
 import { addImage, getListingImages } from "./imageModel";
+import { getCategoryById } from "./categoryModel";
 
 const getAllListings = async (): Promise<ListingWithId[]> => {
     const listings = (await Database.get("listings")) as null | DBListing[];
@@ -17,6 +18,7 @@ const getAllListings = async (): Promise<ListingWithId[]> => {
                 images,
                 thumbnail: images.find(image => image.thumbnail) ?? null,
                 user: user ?? listing.user,
+                category: (await getCategoryById(listing.category)) ?? listing.category,
             };
         })
     );
@@ -33,6 +35,7 @@ const getUserListings = async (userId: number): Promise<ListingWithId[]> => {
             return {
                 ...listing,
                 user: user ?? listing.user,
+                category: (await getCategoryById(listing.category)) ?? listing.category,
             };
         })
     );
@@ -80,6 +83,7 @@ const getListing = async (id: number): Promise<ListingWithId | null> => {
         images,
         thumbnail: images.find(image => image.thumbnail) ?? null,
         user: user ?? listing.user,
+        category: (await getCategoryById(listing.category)) ?? listing.category,
     };
 };
 
