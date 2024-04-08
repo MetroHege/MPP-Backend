@@ -8,7 +8,7 @@ import { getCategoryById } from "./categoryModel";
 
 const getAllListings = async (filters?: { category?: number }): Promise<ListingWithId[]> => {
     const listings = (await Database.query(
-        "SELECT * FROM listings WHERE category = ?",
+        "SELECT * FROM listings" + (filters?.category ? " WHERE category = ?" : ""),
         filters?.category ? [filters.category] : undefined
     )) as DBListing[] | null;
     if (!listings) return [];
