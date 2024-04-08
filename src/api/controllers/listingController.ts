@@ -88,7 +88,6 @@ const deleteListing = async (req: Request, res: Response, next: NextFunction) =>
             (typeof listingData.user === "number" ? listingData.user : listingData.user.id)
     )
         return next(new ApiError(403, "Forbidden"));
-    if (!req.user) return next(new ApiError(401, "Unauthorized"));
     const id = await deleteListingById(+req.params.id);
 
     res.json({ id });
