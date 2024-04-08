@@ -94,7 +94,15 @@ const updateListing = async (
     id: number,
     listingData: Partial<Omit<PostableListing, "images"> & { images: string }>
 ): Promise<ListingWithId | null> => {
-    const success = await Database.update("listings", id, listingData);
+    const listing = await getListing(id);
+    if (!listing) return null;
+    // only update changed fields
+    const newData: Partial<Omit<PostableListing, "images"> & { images: string }> = {};
+    Object.keys(listingData).forEach(key => {
+        // @ts-ignore
+        if (listingData[key] !== listing[key]) newData[key] = listingData[key];
+    });
+    const success = await Database.update("listings", id, newData);
     if (!success) return null;
     return await getListing(id);
 };
