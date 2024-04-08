@@ -13,7 +13,15 @@ import {
 import { PostListingsRequest, PutListingRequest } from "mpp-api-types";
 
 const getListings = async (req: Request, res: Response, next: NextFunction) => {
-    const listings = await getAllListings();
+    const searchQuery = req.query.query as string | undefined;
+    const category = req.query.category as string | undefined;
+    const listings = await getAllListings({ category: category ? +category : undefined });
+    if (searchQuery) {
+        const searchResults = listings.filter(listing =>
+            listing.title.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+        return res.json(searchResults);
+    }
     res.json(listings);
 };
 
