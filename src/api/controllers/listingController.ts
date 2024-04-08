@@ -78,6 +78,17 @@ const putListing = async (req: Request, res: Response, next: NextFunction) => {
 
 const deleteListing = async (req: Request, res: Response, next: NextFunction) => {
     if (!req.user) return next(new ApiError(401, "Unauthorized"));
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) return next(new ApiError(400, errors.array()[0].msg));
+    const listingData = await getListing(+req.params.id);
+    if (!listingData) return next(new ApiError(404, "Listing not found"));
+    if (
+        !req.user.admin &&
+        req.user.id !==
+            (typeof listingData.user === "number" ? listingData.user : listingData.user.id)
+    )
+        return next(new ApiError(403, "Forbidden"));
+    if (!req.user) return next(new ApiError(401, "Unauthorized"));
     const id = await deleteListingById(+req.params.id);
 
     res.json({ id });
