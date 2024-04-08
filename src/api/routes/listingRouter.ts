@@ -23,6 +23,6 @@ listingRouter
 listingRouter
     .get("/:id", validateId, getListingById)
     .put("/:id", authenticate, ...validatePutListingById, putListing)
-    .delete("/:id", validateId, deleteListing);
+    .delete("/:id", authenticate, validateId, deleteListing);
 
 export default listingRouter;
