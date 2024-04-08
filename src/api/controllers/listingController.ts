@@ -59,8 +59,13 @@ const putListing = async (req: Request, res: Response, next: NextFunction) => {
     if (!req.user) return next(new ApiError(401, "Unauthorized"));
     const errors = validationResult(req);
     if (!errors.isEmpty()) return next(new ApiError(400, errors.array()[0].msg));
-    if (!req.user) return next(new ApiError(401, "Unauthorized"));
-    if (!req.user.admin && req.user.id !== +req.params.id)
+    const listingData = await getListing(+req.params.id);
+    if (!listingData) return next(new ApiError(404, "Listing not found"));
+    if (
+        !req.user.admin &&
+        req.user.id !==
+            (typeof listingData.user === "number" ? listingData.user : listingData.user.id)
+    )
         return next(new ApiError(403, "Forbidden"));
 
     const body = req.body as PutListingRequest & { images?: string };
