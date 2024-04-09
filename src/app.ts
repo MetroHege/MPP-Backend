@@ -5,6 +5,7 @@ import { errorHandler, notFoundHandler } from "./core/middleware/errorHandler";
 import https from "https";
 import debux from "debux";
 import httpsOptions from "./config/httpsOptions";
+import rateLimit from "./core/middleware/ratelimit";
 
 const app = express();
 
@@ -31,6 +32,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/uploads", express.static("uploads"));
 app.use("/docs", express.static("docs"));
 
+app.use(rateLimit);
 app.use("/api", api);
 
 app.use(notFoundHandler);
