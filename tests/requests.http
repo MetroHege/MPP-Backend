@@ -89,13 +89,17 @@ GET http://localhost:3000/api/listings
 ###
 PUT http://localhost:3000/api/listings/1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJ1c2VyIiwiYWRtaW4iOjAsImlhdCI6MTcxMjE0MjMyNCwiZXhwIjoxNzEyNzQ3MTI0fQ.CxCvU45TNHE_OpXQh_POxPSl6EADL4mBpni7mlg22sk
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJ1c2VyIiwiYWRtaW4iOjAsImlhdCI6MTcxMjU3Njg0OCwiZXhwIjoxNzEzMTgxNjQ4fQ.wVZ2soS9NUc77gf-zGEQD1QMbAh4zBRHWsfH9CAg6iE
 
 {
     "price": 10,
     "title": "test",
     "description": "lorem ipsum"
 }
+
+###
+DELETE http://localhost:3000/api/listings/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJ1c2VyIiwiYWRtaW4iOjAsImlhdCI6MTcxMjU3Njg0OCwiZXhwIjoxNzEzMTgxNjQ4fQ.wVZ2soS9NUc77gf-zGEQD1QMbAh4zBRHWsfH9CAg6iE
 
 ###
 POST http://localhost:3000/api/listings
