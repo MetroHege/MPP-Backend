@@ -6,12 +6,19 @@ import config from "../../config";
 import { addImage, getListingImages } from "./imageModel";
 import { getCategoryById } from "./categoryModel";
 
-const getAllListings = async (filters?: { category?: number }): Promise<ListingWithId[]> => {
+const getAllListings = async (
+    range: { start: number; end: number } = { start: 0, end: 25 },
+    filters?: { category?: number }
+): Promise<ListingWithId[]> => {
     const listings = (await Database.query(
         "SELECT * FROM listings" + (filters?.category ? " WHERE category = ?" : ""),
         filters?.category ? [filters.category] : undefined
     )) as DBListing[] | null;
     if (!listings) return [];
+    if (listings.length < range.end) range.end = listings.length;
+    listings.splice(range.end);
+    listings.splice(0, range.start);
+
     const fullListings = Promise.all(
         listings.map(async listing => {
             const user = await getUser(listing.user);
