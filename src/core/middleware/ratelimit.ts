@@ -3,7 +3,7 @@ import rateLimits from "../cache/Ratelimits";
 
 const rateLimit = (req: Request, res: Response, next: NextFunction) => {
     if (!req.ip) return;
-    const rateLimit = 100;
+    const rateLimit = 0;
     const now = Date.now();
     const lastRequest = rateLimits.get(req.ip);
     if (
