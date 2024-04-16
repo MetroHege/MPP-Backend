@@ -1,4 +1,4 @@
-// Version 1.4.0
+// Version 1.4.1
 
 type WithId<T> = T & { id: number };
 type WithPassword<T> = T & { password: string };
@@ -48,7 +48,7 @@ declare module "mpp-api-types" {
         title: string;
         description: string;
         thumbnail: Image | null;
-        images: Image[] | string;
+        images: Image[];
     }
 
     export type ListingWithId = WithId<Listing>;
