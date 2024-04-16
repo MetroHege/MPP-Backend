@@ -143,6 +143,7 @@ const updateListing = async (
 };
 
 const deleteListing = async (id: number): Promise<DeleteListingResponse | null> => {
+    await Database.query("DELETE FROM messages WHERE listing = ?", [id]);
     await Database.query("DELETE FROM images WHERE listing = ?", [id]);
     const deleted = await Database.delete("listings", id);
     return deleted && deleted > 0 ? { id: Number(id) } : null;

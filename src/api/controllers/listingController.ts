@@ -10,7 +10,8 @@ import {
     deleteListing as deleteListingById,
     updateListing,
 } from "../models/listingModel";
-import { PostListingsRequest, PutListingRequest } from "mpp-api-types";
+import { PostListingsRequest, PostMessagesRequest, PutListingRequest } from "mpp-api-types";
+import { addMessage, getMessagesByListingId } from "../models/messageModel";
 
 const getListings = async (req: Request, res: Response, next: NextFunction) => {
     const searchQuery = req.query.query as string | undefined;
@@ -95,4 +96,33 @@ const deleteListing = async (req: Request, res: Response, next: NextFunction) =>
     res.json({ id });
 };
 
-export { getListings, getUsersListings, postListing, getListingById, putListing, deleteListing };
+const getListingMessages = async (req: Request, res: Response, next: NextFunction) => {
+    const messages = await getMessagesByListingId(req.params.id);
+    res.json(messages);
+};
+
+const postListingMessage = async (req: Request, res: Response, next: NextFunction) => {
+    if (!req.user) return next(new ApiError(401, "Unauthorized"));
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) return next(new ApiError(400, errors.array()[0].msg));
+
+    const body = req.body as PostMessagesRequest;
+    const message = await addMessage({
+        listing: +req.params.id,
+        user: +req.user.id,
+        content: body.content,
+    });
+
+    res.status(201).json(message);
+};
+
+export {
+    getListings,
+    getUsersListings,
+    postListing,
+    getListingById,
+    putListing,
+    deleteListing,
+    getListingMessages,
+    postListingMessage,
+};

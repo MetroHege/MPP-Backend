@@ -1,8 +1,8 @@
 import mysql from "mysql2/promise";
 import config from "../../config";
-import { DBListing, DBUser } from "../../types/DBTypes";
+import { DBListing, DBMessage, DBUser } from "../../types/DBTypes";
 
-type table = "users" | "listings" | "categories" | "images";
+type table = "users" | "listings" | "categories" | "images" | "messages";
 
 const pool = mysql.createPool({
     host: config.db_host,
@@ -15,7 +15,10 @@ const pool = mysql.createPool({
 });
 
 class Database {
-    static async get(table: table, id?: number | string): Promise<null | (DBUser | DBListing)[]> {
+    static async get(
+        table: table,
+        id?: number | string
+    ): Promise<null | (DBUser | DBListing | DBMessage)[]> {
         try {
             const query = `SELECT * FROM ${table}${id ? " WHERE id = ?" : ""}`;
             const [rows] = await pool.execute(query, id ? [id] : []);

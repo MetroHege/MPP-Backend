@@ -50,3 +50,13 @@ CREATE TABLE images (
     thumbnail BOOLEAN NOT NULL DEFAULT FALSE,
     FOREIGN KEY (listing) REFERENCES listings(id)
 );
+
+CREATE TABLE messages (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    listing INT NOT NULL,
+    user INT NOT NULL,
+    content TEXT NOT NULL,
+    time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (listing) REFERENCES listings(id),
+    FOREIGN KEY (user) REFERENCES users(id)
+);
