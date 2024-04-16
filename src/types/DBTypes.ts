@@ -11,7 +11,6 @@ export interface DBListing extends Listing {
     user: number;
     category: number;
     quality: number;
-    images: string;
 }
 
 export interface DBCategory extends Category {
