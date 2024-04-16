@@ -14,22 +14,16 @@ import { PostListingsRequest, PutListingRequest } from "mpp-api-types";
 
 const getListings = async (req: Request, res: Response, next: NextFunction) => {
     const searchQuery = req.query.query as string | undefined;
+    const sort = req.query.sort as string | undefined;
     const range = (req.query.range as string | undefined)?.split("-").map(Number);
     const start = range && range[1] ? range[0] : 0;
     const end = range && range[1] ? range[1] : range ? range[0] : 25;
 
     const category = req.query.category as string | undefined;
-    const listings = await getAllListings(
-        { start, end },
-        { category: category ? +category : undefined }
-    );
-
-    if (searchQuery) {
-        const searchResults = listings.filter(listing =>
-            listing.title.toLowerCase().includes(searchQuery.toLowerCase())
-        );
-        return res.json(searchResults);
-    }
+    const listings = await getAllListings({ start, end }, sort, {
+        category: category ? +category : undefined,
+        query: searchQuery,
+    });
     res.json(listings);
 };
 

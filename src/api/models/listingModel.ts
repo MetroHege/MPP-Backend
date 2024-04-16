@@ -8,13 +8,36 @@ import { getCategoryById } from "./categoryModel";
 
 const getAllListings = async (
     range: { start: number; end: number } = { start: 0, end: 25 },
-    filters?: { category?: number }
+    sort?: string | "newest" | "oldest" | "low-high" | "high-low",
+    filters?: { category?: number; query?: string }
 ): Promise<ListingWithId[]> => {
-    const listings = (await Database.query(
+    let listings = (await Database.query(
         "SELECT * FROM listings" + (filters?.category ? " WHERE category = ?" : ""),
         filters?.category ? [filters.category] : undefined
     )) as DBListing[] | null;
     if (!listings) return [];
+    if (filters?.query)
+        listings = listings.filter(listing => {
+            const query = filters.query?.toLowerCase() ?? "";
+            return listing.title.toLowerCase().includes(query);
+        });
+
+    if (sort) {
+        switch (sort) {
+            case "newest":
+                listings.sort((a, b) => (a.time > b.time ? -1 : 1));
+                break;
+            case "oldest":
+                listings.sort((a, b) => (a.time < b.time ? -1 : 1));
+                break;
+            case "low-high":
+                listings.sort((a, b) => a.price - b.price);
+                break;
+            case "high-low":
+                listings.sort((a, b) => b.price - a.price);
+                break;
+        }
+    }
     if (listings.length < range.end) range.end = listings.length;
     listings.splice(range.end);
     listings.splice(0, range.start);
