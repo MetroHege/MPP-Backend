@@ -5,6 +5,7 @@ import { getUser } from "./userModel";
 import config from "../../config";
 import { addImage, getListingImages } from "./imageModel";
 import { getCategoryById } from "./categoryModel";
+import searchListings from "../../core/functions/search";
 
 const getAllListings = async (
     range: { start: number; end: number } = { start: 0, end: 25 },
@@ -19,7 +20,7 @@ const getAllListings = async (
     if (filters?.query)
         listings = listings.filter(listing => {
             const query = filters.query?.toLowerCase() ?? "";
-            return listing.title.toLowerCase().includes(query);
+            return searchListings(listing, query);
         });
 
     if (sort) {
