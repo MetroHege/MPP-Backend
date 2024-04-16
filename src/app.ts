@@ -22,7 +22,7 @@ if (process.env.NODE_ENV === "production") {
         next();
     });
 
-    app.use("/", express.static("client/dist"));
+    app.use("/", express.static("../frontend/dist"));
 }
 
 app.use(cors());
