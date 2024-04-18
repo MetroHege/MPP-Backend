@@ -6,7 +6,7 @@ import rateLimit from "./core/middleware/ratelimit";
 
 const app = express();
 
-if (process.env.NODE_ENV === "production") app.use("/", express.static("/dist"));
+if (process.env.NODE_ENV === "production") app.use("/", express.static("dist"));
 
 app.use(cors());
 app.use(express.json());
