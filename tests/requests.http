@@ -67,6 +67,10 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hb
 }
 
 ###
+DELETE http://localhost:3000/api/categories/14
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwidXNlcm5hbWUiOiJ1c2VyIiwiYWRtaW4iOjEsImlhdCI6MTcxNDAzNDEyNSwiZXhwIjoxNzE0NjM4OTI1fQ.aRO78xSO5Tjzg9jl_plUt5xR_Mhg7JJmpolSxSqqTuI
+
+###
 GET http://localhost:3000/api/categories
 
 ###
