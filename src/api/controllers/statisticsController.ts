@@ -11,7 +11,7 @@ import { getAllUsers } from "../models/userModel";
 import ApiError from "../../core/classes/ApiError";
 
 const getListingStatistics = async (req: Request, res: Response, next: NextFunction) => {
-    const listings = await getAllListings();
+    const listings = await getAllListings({ start: 0, end: Infinity });
     const totalMessages = (
         await Promise.all(listings.map(listing => getMessagesByListingId(listing.id.toString())))
     ).reduce((acc, messages) => acc + messages.length, 0);
