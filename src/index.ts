@@ -8,3 +8,5 @@ app.listen(config.port, () => {
         function: "listen",
     });
 });
+
+export { app };

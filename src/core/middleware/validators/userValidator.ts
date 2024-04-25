@@ -31,9 +31,9 @@ const validateLastName = (optional: boolean) =>
         .isString()
         .withMessage("Last name must be a string");
 
-const validatePhone = () =>
+const validatePhone = (optional: boolean) =>
     body("phone")
-        .optional()
+        .optional(optional)
         .trim()
         .notEmpty()
         .isString()
@@ -49,6 +49,7 @@ const validateEmail = (optional: boolean) =>
         .withMessage("Email must be valid")
         .custom(async value => {
             const user = await findUser({ email: value });
+
             if (user) throw new Error("Email already in use");
         });
 
@@ -72,7 +73,7 @@ const createValidationChain = (optional = false) => [
     validateUsername(optional),
     validateFirstName(optional),
     validateLastName(optional),
-    validatePhone(),
+    validatePhone(optional),
     validateEmail(optional),
     validateCity(optional),
     validatePassword(optional),
