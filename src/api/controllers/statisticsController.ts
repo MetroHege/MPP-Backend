@@ -43,7 +43,12 @@ const getUserListingStatistics = async (req: Request, res: Response, next: NextF
     const totalMessages = messages.reduce((acc, messages) => acc + messages.length, 0);
     const ownMessages = messages.reduce(
         (acc, messages, i) =>
-            acc + messages.filter(message => message.user === listings[i].user).length,
+            acc +
+            messages.filter(
+                message =>
+                    (typeof message.user === "number" ? message.user : message.user.id) ===
+                    +req.params.id
+            ).length,
         0
     );
     const json: GetUserListingStatisticResponse = {
