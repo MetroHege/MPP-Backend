@@ -6,22 +6,30 @@ import config from "../../config";
 import { addImage, getListingImages } from "./imageModel";
 import { getCategoryById } from "./categoryModel";
 import searchListings from "../../core/functions/search";
+import { ListingWithMatchPercentage } from "../../types/types";
 
 const getAllListings = async (
     range: { start: number; end: number } = { start: 0, end: 25 },
     sort?: string | "newest" | "oldest" | "low-high" | "high-low",
     filters?: { category?: number; query?: string }
 ): Promise<ListingWithId[]> => {
-    let listings = (await Database.query(
+    const DBlistings = (await Database.query(
         "SELECT * FROM listings" + (filters?.category ? " WHERE category = ?" : ""),
         filters?.category ? [filters.category] : undefined
     )) as DBListing[] | null;
-    if (!listings) return [];
+    if (!DBlistings) return [];
+    let listings: ListingWithMatchPercentage[] = DBlistings.map(listing => ({
+        ...listing,
+        matchPercentage: 0,
+    }));
     if (filters?.query)
         listings = listings.filter(listing => {
             const query = filters.query?.toLowerCase() ?? "";
-            return searchListings(listing, query);
+            const searchResult = searchListings(listing, query);
+            listing.matchPercentage = searchResult;
+            return searchResult > 0.2;
         });
+    listings.sort((a, b) => (a.matchPercentage > b.matchPercentage ? -1 : 1));
 
     if (sort) {
         switch (sort) {
@@ -49,6 +57,7 @@ const getAllListings = async (
             const images = await getListingImages(listing.id);
             return {
                 ...listing,
+                matchPercentage: undefined,
                 images,
                 thumbnail: images.find(image => image.thumbnail) ?? null,
                 user: user ?? listing.user,
