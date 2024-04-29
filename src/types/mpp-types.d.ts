@@ -1,9 +1,14 @@
-// Version 1.5.0
+// Version 1.5.1
 
 type WithId<T> = T & { id: number };
 type WithPassword<T> = T & { password: string };
 
 declare module "mpp-api-types" {
+    export interface Error {
+        status: number;
+        message: string;
+    }
+
     export interface User {
         username: string;
         firstName?: string;
