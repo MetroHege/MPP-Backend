@@ -16,7 +16,7 @@ declare module "mpp-api-types" {
 
     export type UserWithId = WithId<User>;
 
-    export type PartialUser = Pick<UserWithId, "id" | "username" | "city" | "admin">;
+    export type PartialUser = Pick<UserWithId, "id" | "username" | "city" | "admin" | "email">;
 
     export enum Quality {
         New = 5,
