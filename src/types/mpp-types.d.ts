@@ -1,9 +1,14 @@
-// Version 1.5.0
+// Version 1.5.1
 
 type WithId<T> = T & { id: number };
 type WithPassword<T> = T & { password: string };
 
 declare module "mpp-api-types" {
+    export interface Error {
+        status: number;
+        message: string;
+    }
+
     export interface User {
         username: string;
         firstName?: string;
@@ -135,11 +140,11 @@ declare module "mpp-api-types" {
     // GET categories
     export type GetCategoriesResponse = WithId<Category>[];
 
-    // POST category
+    // POST categories
     export type PostCategoryRequest = Category;
     export type PostCategoryResponse = WithId<Category>;
 
-    // DELETE category
+    // DELETE categories/:id
     export type DeleteCategoryResponse = { id: number };
 
     // get statistics/listings
