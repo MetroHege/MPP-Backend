@@ -140,11 +140,11 @@ declare module "mpp-api-types" {
     // GET categories
     export type GetCategoriesResponse = WithId<Category>[];
 
-    // POST category
+    // POST categories
     export type PostCategoryRequest = Category;
     export type PostCategoryResponse = WithId<Category>;
 
-    // DELETE category
+    // DELETE categories/:id
     export type DeleteCategoryResponse = { id: number };
 
     // get statistics/listings
