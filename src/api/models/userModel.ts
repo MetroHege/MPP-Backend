@@ -19,6 +19,7 @@ const getAllUsers = async (): Promise<PartialUser[]> => {
               id: user.id,
               username: user.username,
               city: user.city,
+              email: user.email,
               admin: user.admin === 1 || user.admin === true,
           }))
         : [];
@@ -54,6 +55,7 @@ const getUser = async (
             ? {
                   id: user?.id,
                   username: user?.username,
+                  email: user?.email,
                   city: user?.city,
                   admin: user?.admin === 1,
               }
