@@ -1,25 +1,22 @@
 import { Listing } from "mpp-api-types";
 
-export default function searchListings(listing: Listing, query: string): boolean {
+export default function searchListings(listing: Listing, query: string): number {
+    let listingMatchPercentage: number = 0;
     const title = toCleanString(listing.title);
     const description = toCleanString(listing.description);
     const category = toCleanString(
         typeof listing.category === "number" ? listing.category.toString() : listing.category.title
     );
+    if (title === query) listingMatchPercentage += 1;
+    if (title.includes(query)) listingMatchPercentage += 0.5;
+    if (description.includes(query)) listingMatchPercentage += 0.3;
+    if (category.includes(query)) listingMatchPercentage += 0.2;
 
-    const searchWords = toCleanString(query).split(" ");
+    listingMatchPercentage += calculateMatchPercentage(title, query) * 0.5;
+    listingMatchPercentage += calculateMatchPercentage(description, query) * 0.3;
+    listingMatchPercentage += calculateMatchPercentage(category, query) * 0.2;
 
-    const isMatch = searchWords.some(
-        word =>
-            title.includes(word) ||
-            description.includes(word) ||
-            category.includes(word) ||
-            title.split(" ").some(titleWord => levenshteinDistance(word, titleWord) <= 2) ||
-            description.split(" ").some(descWord => levenshteinDistance(word, descWord) <= 2) ||
-            category.split(" ").some(catWord => levenshteinDistance(word, catWord) <= 2)
-    );
-
-    return isMatch;
+    return listingMatchPercentage;
 }
 
 function toCleanString(s: string): string {
@@ -27,6 +24,11 @@ function toCleanString(s: string): string {
         .toLowerCase()
         .replace(/[^a-z0-9 ]/g, "")
         .replace(/ +(?= )/g, "");
+}
+
+function calculateMatchPercentage(a: string, b: string): number {
+    const distance = levenshteinDistance(a, b);
+    return 1 - distance / Math.max(a.length, b.length);
 }
 
 function levenshteinDistance(a: string, b: string) {

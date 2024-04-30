@@ -73,6 +73,7 @@ const putListing = async (req: Request, res: Response, next: NextFunction) => {
         return next(new ApiError(403, "Forbidden"));
 
     const body = req.body as PutListingRequest & { images?: string };
+    if (Object.keys(body).length === 0) return next(new ApiError(400, "No data provided"));
     if (body.price && body.price > 1000000) return next(new ApiError(400, "Price too high"));
     const listing = await updateListing(+req.params.id, {
         ...body,
