@@ -24,18 +24,18 @@ const listing: Listing = {
 
 describe("search function", () => {
     test("searches for lisding", () => {
-        expect(searchListings(listing, "lisding")).toBe(true);
+        expect(searchListings(listing, "lisding")).toBeGreaterThan(0);
     });
 
     test("searches for test", () => {
-        expect(searchListings(listing, "test")).toBe(true);
+        expect(searchListings(listing, "test")).toBeGreaterThan(1);
     });
 
     test("searches for category", () => {
-        expect(searchListings(listing, "category")).toBe(true);
+        expect(searchListings(listing, "category")).toBeGreaterThan(0.2);
     });
 
     test("searches xxx", () => {
-        expect(searchListings(listing, "xxx")).toBe(false);
+        expect(searchListings(listing, "xxx")).toBe(0);
     });
 });
