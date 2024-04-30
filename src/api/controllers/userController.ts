@@ -2,7 +2,7 @@ import { Response, NextFunction } from "express";
 import Request from "../../types/Request";
 import { validationResult } from "express-validator";
 import ApiError from "../../core/classes/ApiError";
-import { PostUsersRequest, PutMeRequest } from "mpp-api-types";
+import { PostUsersRequest } from "mpp-api-types";
 import { addUser, deleteUser, getAllUsers, getUser, updateUser } from "../models/userModel";
 
 const getUsers = async (req: Request, res: Response, next: NextFunction) => {
@@ -31,7 +31,9 @@ const putMe = async (req: Request, res: Response, next: NextFunction) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) return next(new ApiError(400, errors.array()[0].msg));
 
-    const body = req.body as PutMeRequest;
+    const body = req.body;
+    delete body.id;
+    delete body.admin;
     const user = await updateUser(req.user.id, body);
 
     res.json(user);
@@ -61,7 +63,9 @@ const putUserById = async (req: Request, res: Response, next: NextFunction) => {
     if (!req.user.admin && req.user.id !== +req.params.id)
         return next(new ApiError(403, "Forbidden"));
 
-    const body = req.body as PutMeRequest;
+    const body = req.body;
+    delete body.id;
+    delete body.admin;
     const user = await updateUser(+req.params.id, body);
 
     res.json(user);
