@@ -34,6 +34,7 @@ const putMe = async (req: Request, res: Response, next: NextFunction) => {
     const body = req.body;
     delete body.id;
     delete body.admin;
+    if (Object.keys(body).length === 0) return next(new ApiError(400, "No data provided"));
     const user = await updateUser(req.user.id, body);
 
     res.json(user);
@@ -66,6 +67,7 @@ const putUserById = async (req: Request, res: Response, next: NextFunction) => {
     const body = req.body;
     delete body.id;
     delete body.admin;
+    if (Object.keys(body).length === 0) return next(new ApiError(400, "No data provided"));
     const user = await updateUser(+req.params.id, body);
 
     res.json(user);
