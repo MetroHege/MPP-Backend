@@ -40,7 +40,7 @@ const postListing = async (req: Request, res: Response, next: NextFunction) => {
     if (!req.files) return next(new ApiError(400, "No images uploaded"));
 
     const body = req.body as PostListingsRequest;
-    if (body.price > 1000000) return next(new ApiError(400, "Price too high"));
+    if (body.price > 1e7) return next(new ApiError(400, "Price too high"));
     const listing = await addListing(
         {
             ...body,
