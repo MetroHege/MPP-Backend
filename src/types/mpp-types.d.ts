@@ -1,4 +1,4 @@
-// Version 1.5.1
+// Version 1.5.2
 
 type WithId<T> = T & { id: number };
 type WithPassword<T> = T & { password: string };
@@ -138,11 +138,11 @@ declare module "mpp-api-types" {
     export type DeleteMessageResponse = { id: number };
 
     // GET categories
-    export type GetCategoriesResponse = WithId<Category>[];
+    export type GetCategoriesResponse = CategoryWithId[];
 
     // POST categories
     export type PostCategoryRequest = Category;
-    export type PostCategoryResponse = WithId<Category>;
+    export type PostCategoryResponse = CategoryWithId;
 
     // DELETE categories/:id
     export type DeleteCategoryResponse = { id: number };
