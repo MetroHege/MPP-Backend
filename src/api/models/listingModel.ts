@@ -29,7 +29,6 @@ const getAllListings = async (
             listing.matchPercentage = searchResult;
             return searchResult > 0.2;
         });
-    listings.sort((a, b) => (a.matchPercentage > b.matchPercentage ? -1 : 1));
 
     if (sort) {
         switch (sort) {
@@ -47,6 +46,8 @@ const getAllListings = async (
                 break;
         }
     }
+
+    listings.sort((a, b) => (a.matchPercentage > b.matchPercentage ? -1 : 1));
     if (listings.length < range.end) range.end = listings.length;
     listings.splice(range.end);
     listings.splice(0, range.start);
