@@ -82,6 +82,7 @@ const updateUser = async (id: number, user: PutUserRequest): Promise<UserWithId 
 
 const deleteUser = async (id: number): Promise<DeleteUserResponse | null> => {
     await deleteUserListings(id);
+    await Database.query("DELETE FROM messages WHERE user = ?", [id]);
     const deleted = await Database.delete("users", id);
     return deleted && deleted > 0 ? { id: Number(id) } : null;
 };
