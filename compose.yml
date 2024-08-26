@@ -1,0 +1,38 @@
+version: '3.8'  # Adjust based on your requirements
+
+services:
+  mariadb:
+    image: mariadb:latest
+    container_name: mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD}
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    ports:
+      - "3306:3306"  # Binds port 3306 on the host to port 3306 in the container
+    restart: always
+    networks:
+      - backend_network
+
+  backend:
+    build:
+      context: ./backend  # Adjust this path to where your Dockerfile is located
+      dockerfile: Dockerfile
+    image: mpp/backend:latest
+    container_name: backend
+    volumes:
+      - ./backend/uploads:/usr/src/app/uploads
+      - ./backend/.env:/usr/src/app/.env:ro
+    command: "npm start"
+    ports:
+      - "3000:3000"  # Binds port 3000 on the host to port 3000 in the container
+    restart: always
+    networks:
+      - backend_network
+
+networks:
+  backend_network:
+    driver: bridge
+
+volumes:
+  mariadb_data:
